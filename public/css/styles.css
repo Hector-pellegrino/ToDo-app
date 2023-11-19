@@ -1,0 +1,15 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+:root {
+    --bg-header-mobile: url(../imagens/bg-header-mobile-light.png);
+
+}
+
+header {
+    background-image: var(--bg-header-mobile);
+}
