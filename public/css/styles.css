@@ -7,6 +7,9 @@
 
 :root {
     --bg-header-mobile: url(../imagens/bg-header-mobile-light.png);
+    --input-box-shadow: rgba(194, 195, 214, 0.50);
+    --input-color: #494C6B;
+    --button-color: #393A4B;
 
 }
 
@@ -30,4 +33,28 @@ header div {
 header div h1 {
     color: #fff;
     text-transform: uppercase;
+}
+
+header form {
+    display: flex;
+    gap: 0.5rem;
+}
+
+header form input {
+    width: 100%;
+    padding: 1.12rem;
+    border-radius: 0.3125rem;
+    border: none;
+    box-shadow: 0px 35px 50px -15px var(--input-box-shadow);
+    outline: none;
+    font-size: 0.75rem;
+    color: var(--input-color);
+}
+
+header form button {
+    padding: 0.75rem;
+    border-radius: 0.3125rem;
+    border: none;
+    background-color: var(--button-color);
+    color: #fff;
 }
