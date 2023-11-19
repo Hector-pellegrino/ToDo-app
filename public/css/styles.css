@@ -12,6 +12,7 @@
     --button-color: #393A4B;
     --bg-main: #FAFAFA;
     --bg-tarefas: #fff:
+    --box-shadow: 0px 35px 50px -15px rgba(194, 195, 214, 0.50);
 }
 
 header {
@@ -64,8 +65,33 @@ main {
     background-color: var(--bg-main);
     min-height: calc(100vh - 12.5rem);
     padding-inline: 1.5rem;
+
 }
 
 .tarefas {
     background-color: var(--bg-tarefas);
+    box-shadow: var(--box-shadow);
+    border-radius: 0.3125rem;
+}
+
+.tarefas .tarefa {
+    padding: 1rem 1.25rem;
+}
+
+.tarefa form {
+    display: flex;
+    justify-content: space-between;
+}
+
+.tarefa div {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.tarefa button {
+    border: none;
+    background: none;
+    width: 0.75rem;
+    height: 0.75rem;
 }
