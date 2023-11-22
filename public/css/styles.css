@@ -10,9 +10,10 @@
     --bg-header-desktop: url(../imagens/bg-header-desktop-light.png);
     --input-box-shadow: rgba(194, 195, 214, 0.50);
     --input-color: #494C6B;
+    --input-bg: #FFF;
     --placeholder-color: #9495A5;
-    --button-color: #393A4B;
-    --button-color-hover: #494C6B;
+    --button-color: #494C6B;
+    --button-color-hover: #393A4B;
     --bg-body: #FAFAFA;
     --bg-tarefas: #fff;
     --box-shadow: 0px 35px 50px -15px rgba(194, 195, 214, 0.50);
@@ -23,6 +24,24 @@
     --info-button-active: #3A7CFD;
 }
 
+body.dark {
+    --bg-header-mobile: url(../imagens/bg-header-mobile-dark.png);
+    --bg-header-desktop: url(../imagens/bg-header-desktop-dark.png);
+    --input-box-shadow: rgba(0, 0, 0, 0.50);;
+    --input-color: #C8CBE7;
+    --input-bg: #25273D;
+    --placeholder-color: #767992;
+    --button-color: #25273D;
+    --button-color-hover: #5B5E7E;
+    --bg-body: #171823;;
+    --bg-tarefas: #25273D;
+    --box-shadow: 0px 35px 50px -15px rgba(0, 0, 0, 0.50);;
+    --border-color: #393A4B;
+    --text-color: #C8CBE7;
+    --info-text-color: #5B5E7E;
+    --info-button-hover:#E3E4F1;
+    --info-button-active: #3A7CFD;
+}
 
 body {
     background: var(--bg-body);
@@ -69,6 +88,7 @@ header form input {
     outline: none;
     font-size: 0.75rem;
     color: var(--input-color);
+    background: var(--input-bg);
 }
 
 header form input::placeholder {
