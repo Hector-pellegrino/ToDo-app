@@ -1,38 +1,18 @@
 <main>
     <section class="tarefas">
+        {{#each tarefas}}
         <div class="tarefa">
             <form action="">
                 <div>
-                    <input type="radio" id="">
-                    <label for="tarefa-1">Completar curso de JavaScript</label>
+                    <input type="checkbox" id="tarefa-{{this.id}}">
+                    <label for="tarefa-{{this.id}}"> {{this.descricao}} </label>
                 </div>
                 <button>
                     <img src="/imagens/x-icon.png" alt="icone de x">
                 </button>
             </form>
         </div>
-        <div class="tarefa">
-            <form action="">
-                <div>
-                    <input type="radio" id="">
-                    <label for="tarefa-1">Completar curso de JavaScript</label>
-                </div>
-                <button>
-                    <img src="/imagens/x-icon.png" alt="icone de x">
-                </button>
-            </form>
-        </div>
-        <div class="tarefa">
-            <form action="">
-                <div>
-                    <input type="radio" id="">
-                    <label for="tarefa-1">Completar curso de JavaScript</label>
-                </div>
-                <button>
-                    <img src="/imagens/x-icon.png" alt="icone de x">
-                </button>
-            </form>
-        </div>
+        {{/each}}
         <div class="informacoes">
             <p>5 tarefas ativas</p>
 
