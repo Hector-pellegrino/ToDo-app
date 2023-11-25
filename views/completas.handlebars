@@ -1,0 +1,33 @@
+<main>
+    <section class="tarefas">
+        {{#each tarefas}}
+        <div class="tarefa">
+            <form action="">
+                    <input type="checkbox" id="tarefa-{{this.id}}" checked onchange="DescompletarTarefa({{this.id}})">
+                    <label for="tarefa-{{this.id}}"> {{this.descricao}} </label>
+                </div>
+
+                <button>
+                    <img src="/imagens/x-icon.png" alt="icone de x">
+                </button>
+            </form>
+        </div>
+        {{/each}}
+        <div class="informacoes">
+            <p> {{quantidadeTarefas}} tarefas ativas</p>
+
+            <div class="botoes">
+                <a href="/">Todas</a>
+                <a href="/ativas">Ativas</a>
+                <a href="/completas" class="active">Completas</a>
+            </div>
+
+            <a href="">Limpar tarefas</a>
+        </div>
+    </section>
+    <section class="botoes">
+        <a href="/" >Todas</a>
+        <a href="/ativas">Ativas</a>
+        <a href="/completas" class="active">Completas</a>
+    </section>
+</main>
