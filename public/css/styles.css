@@ -19,6 +19,7 @@
     --box-shadow: 0px 35px 50px -15px rgba(194, 195, 214, 0.50);
     --border-color: #E3E4F1;
     --text-color: #494C6B;
+    --todo-complete-color: #D1D2DA;
     --info-text-color: #9495A5;
     --info-button-hover:#494C6B;
     --info-button-active: #3A7CFD;
@@ -38,6 +39,7 @@ body.dark {
     --box-shadow: 0px 35px 50px -15px rgba(0, 0, 0, 0.50);;
     --border-color: #393A4B;
     --text-color: #C8CBE7;
+    --todo-complete-color: #4D5067;
     --info-text-color: #5B5E7E;
     --info-button-hover:#E3E4F1;
     --info-button-active: #3A7CFD;
@@ -127,6 +129,11 @@ main {
 
 .tarefas .tarefa + .tarefa {
     border-top: 1px solid var(--border-color);
+}
+
+.completa label {
+    text-decoration: line-through;
+    color: var(--todo-complete-color);
 }
 
 .tarefa form {
