@@ -2,6 +2,7 @@ const express = require("express");
 const exphbs = require("express-handlebars");
 require("dotenv").config();
 const { Pool } = require("pg");
+console.log(process.env.DATABASE_URL)
 
 const app = express();
 
