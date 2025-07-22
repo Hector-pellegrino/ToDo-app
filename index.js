@@ -79,6 +79,7 @@ app.post("/criar", async (req, res) => {
   }
 });
 
+
 app.get("/completas", async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM tarefas WHERE completa = true");
