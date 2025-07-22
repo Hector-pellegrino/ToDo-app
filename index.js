@@ -1,198 +1,121 @@
 const express = require("express");
 const exphbs = require("express-handlebars");
-const mysql = require("mysql2");
+require("dotenv").config();
+const { Pool } = require("pg");
 
 const app = express();
 
+// Configuração do banco PostgreSQL com URL do Neon
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
+
 app.engine("handlebars", exphbs.engine());
 app.set("view engine", "handlebars");
-
 app.use(express.static("public"));
-
-//converter dados do formulário em objetos js
 app.use(
   express.urlencoded({
     extended: true,
   })
 );
-
 app.use(express.json());
 
-//rotas
-app.get("/limparTarefas", (requisicao, resposta) => {
-  const sql = "DELETE FROM tarefas";
-
-  conexao.query(sql, (erro) => {
-    if (erro) {
-      return console.log(erro);
-    }
-
-    resposta.redirect("/");
-  });
-});
-
-app.post("/excluir", (requisicao, resposta) => {
-  const id = requisicao.body.id;
-
-  const sql = `
-        DELETE FROM tarefas
-        WHERE id = ${id}
-    `;
-  conexao.query(sql, (erro) => {
-    if (erro) {
-      return console.log(erro);
-    }
-
-    resposta.redirect("/");
-  });
-});
-
-app.post("/descompletar", (requisicao, resposta) => {
-  const id = requisicao.body.id;
-
-  const sql = `
-        UPDATE tarefas
-        SET completa = '0'
-        WHERE id = ${id}
-    `;
-
-  conexao.query(sql, (erro) => {
-    if (erro) {
-      return console.log(erro);
-    }
-
-    resposta.redirect("/");
-  });
-});
-
-app.post("/completar", (requisicao, resposta) => {
-  const id = requisicao.body.id;
-
-  const sql = `
-        UPDATE tarefas
-        SET completa = '1'
-        WHERE id = ${id}
-    `;
-
-  conexao.query(sql, (erro) => {
-    if (erro) {
-      return console.log(erro);
-    }
-
-    resposta.redirect("/");
-  });
-});
-
-app.post("/criar", (requisicao, resposta) => {
-  const descricao = requisicao.body.descricao;
-  const completa = 0;
-
-  const sql = `
-        INSERT INTO tarefas(descricao, completa)
-        VALUES ('${descricao}', '${completa}')
-    `;
-
-  conexao.query(sql, (erro) => {
-    if (erro) {
-      return console.log(erro);
-    }
-
-    resposta.redirect("/");
-  });
-});
-
-app.get("/completas", (requisicao, resposta) => {
-  const sql = `
-        SELECT * FROM tarefas
-        WHERE completa = 1
-    `;
-
-  conexao.query(sql, (erro, dados) => {
-    if (erro) {
-      return console.log(erro);
-    }
-
-    const tarefas = dados.map((dado) => {
-      return {
-        id: dado.id,
-        descricao: dado.descricao,
-        completa: true,
-      };
-    });
-
-    const quantidadeTarefas = tarefas.length;
-
-    resposta.render("completas", { tarefas, quantidadeTarefas });
-  });
-});
-
-app.get("/ativas", (requisicao, resposta) => {
-  const sql = `
-        SELECT * FROM tarefas
-        WHERE completa = 0
-    `;
-  conexao.query(sql, (erro, dados) => {
-    if (erro) {
-      return console.log(erro);
-    }
-
-    const tarefas = dados.map((dado) => {
-      return {
-        id: dado.id,
-        descricao: dado.descricao,
-        completa: false,
-      };
-    });
-
-    const quantidadeTarefas = tarefas.length;
-
-    resposta.render("ativas", { tarefas, quantidadeTarefas });
-  });
-});
-
-app.get("/", (requisicao, resposta) => {
-  const sql = "SELECT * FROM tarefas";
-
-  conexao.query(sql, (erro, dados) => {
-    if (erro) {
-      return console.log(erro);
-    }
-
-    const tarefas = dados.map((dado) => {
-      return {
-        id: dado.id,
-        descricao: dado.descricao,
-        completa: dado.completa === 0 ? false : true,
-      };
-    });
-
-    const tarefasAtivas = tarefas.filter((tarefa) => {
-      return tarefa.completa === false && tarefa;
-    });
-
-    const quantidadeTarefasAtivas = tarefasAtivas.length;
-
-    resposta.render("home", { tarefas, quantidadeTarefasAtivas });
-  });
-});
-
-const conexao = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "root",
-  database: "todoapp",
-  port: 3306,
-});
-
-conexao.connect((erro) => {
-  if (erro) {
-    return console.log(erro);
+// Rotas
+app.get("/limparTarefas", async (req, res) => {
+  try {
+    await pool.query("DELETE FROM tarefas");
+    res.redirect("/");
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
   }
+});
 
-  console.log("EStou conectado ao mysql");
+app.post("/excluir", async (req, res) => {
+  const { id } = req.body;
+  try {
+    await pool.query("DELETE FROM tarefas WHERE id = $1", [id]);
+    res.redirect("/");
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
 
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => {
-    console.log(`Servidor rodando na porta ${PORT}`);
-  });
+app.post("/descompletar", async (req, res) => {
+  const { id } = req.body;
+  try {
+    await pool.query("UPDATE tarefas SET completa = false WHERE id = $1", [id]);
+    res.redirect("/");
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
+
+app.post("/completar", async (req, res) => {
+  const { id } = req.body;
+  try {
+    await pool.query("UPDATE tarefas SET completa = true WHERE id = $1", [id]);
+    res.redirect("/");
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
+
+app.post("/criar", async (req, res) => {
+  const { descricao } = req.body;
+  try {
+    await pool.query("INSERT INTO tarefas (descricao, completa) VALUES ($1, false)", [descricao]);
+    res.redirect("/");
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
+
+app.get("/completas", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM tarefas WHERE completa = true");
+    const tarefas = result.rows;
+    res.render("completas", { tarefas, quantidadeTarefas: tarefas.length });
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
+
+app.get("/ativas", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM tarefas WHERE completa = false");
+    const tarefas = result.rows;
+    res.render("ativas", { tarefas, quantidadeTarefas: tarefas.length });
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
+
+app.get("/", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM tarefas");
+    const tarefas = result.rows;
+    const tarefasAtivas = tarefas.filter((t) => !t.completa);
+    res.render("home", {
+      tarefas,
+      quantidadeTarefasAtivas: tarefasAtivas.length,
+    });
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
 });
