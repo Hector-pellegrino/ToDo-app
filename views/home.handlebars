@@ -3,22 +3,21 @@
     <section class="tarefas">
         {{#each tarefas}}
         <div class="tarefa">
-            <form action="/completar" method="post">
-                {{#if this.completa}}
-                <div class="completa">
-                    <input type="checkbox" id="tarefa-{{this.id}}" checked onchange="DescompletarTarefa({{this.id}})">
-                    <label for="tarefa-{{this.id}}"> {{this.descricao}} </label>
-                </div>
-                {{else}}
 
-                <div>
-                    <input type="checkbox" id="tarefa-{{this.id}}" onchange="completarTarefa({{this.id}})">
-                    <label for="tarefa-{{this.id}}"> {{this.descricao}} </label>
-                </div>
+            <!-- Form para completar/descompletar -->
+            <form action="{{#if this.completa}}/descompletar{{else}}/completar{{/if}}" method="POST">
+                <input type="hidden" name="id" value="{{this.id}}">
+                <button type="submit" style="all: unset; cursor: pointer;">
+                <input type="checkbox" {{#if this.completa}}checked{{/if}} disabled>
+                <label>{{this.descricao}}</label>
+                </button>
+            </form>
 
-                {{/if}}
-                <button onclick="excluirTarefa({{this.id}})">
-                    <img src="/imagens/x-icon.png" alt="icone de x">
+            <!-- Form para excluir -->
+            <form action="/excluir" method="POST" style="display: inline;">
+                <input type="hidden" name="id" value="{{this.id}}">
+                <button type="submit" style="background: none; border: none;">
+                <img src="/imagens/x-icon.png" alt="icone de x">
                 </button>
             </form>
         </div>
