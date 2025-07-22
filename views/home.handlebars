@@ -3,7 +3,7 @@
     <section class="tarefas">
         {{#each tarefas}}
         <div class="tarefa">
-            <form action="">
+            <form action="/completar" method="post">
                 {{#if this.completa}}
                 <div class="completa">
                     <input type="checkbox" id="tarefa-{{this.id}}" checked onchange="DescompletarTarefa({{this.id}})">
