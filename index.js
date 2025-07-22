@@ -2,7 +2,7 @@ const express = require("express");
 const exphbs = require("express-handlebars");
 require("dotenv").config();
 const { Pool } = require("pg");
-console.log(process.env.DATABASE_URL)
+console.log(process.env.DATABASE_URL);
 
 const app = express();
 
@@ -71,7 +71,10 @@ app.post("/completar", async (req, res) => {
 app.post("/criar", async (req, res) => {
   const { descricao } = req.body;
   try {
-    await pool.query("INSERT INTO tarefas (descricao, completa) VALUES ($1, false)", [descricao]);
+    await pool.query(
+      "INSERT INTO tarefas (descricao, completa) VALUES ($1, false)",
+      [descricao]
+    );
     res.redirect("/");
   } catch (err) {
     console.error(err);
@@ -79,10 +82,11 @@ app.post("/criar", async (req, res) => {
   }
 });
 
-
 app.get("/completas", async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM tarefas WHERE completa = true");
+    const result = await pool.query(
+      "SELECT * FROM tarefas WHERE completa = true"
+    );
     const tarefas = result.rows;
     res.render("completas", { tarefas, quantidadeTarefas: tarefas.length });
   } catch (err) {
@@ -93,7 +97,9 @@ app.get("/completas", async (req, res) => {
 
 app.get("/ativas", async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM tarefas WHERE completa = false");
+    const result = await pool.query(
+      "SELECT * FROM tarefas WHERE completa = false"
+    );
     const tarefas = result.rows;
     res.render("ativas", { tarefas, quantidadeTarefas: tarefas.length });
   } catch (err) {
